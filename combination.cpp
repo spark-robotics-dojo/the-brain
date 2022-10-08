@@ -83,6 +83,8 @@ void loop()
     Stop();
   }
 }
+
+
 void objectAvoid()
 {
   distance = getDistance();
@@ -128,6 +130,9 @@ int getDistance()
   }
   return cm;
 }
+
+
+
 int lookLeft()
 {
   // look left
@@ -141,7 +146,7 @@ int lookLeft()
   return leftDistance;
   delay(100);
 }
-}
+
 
 int lookRight()
 {

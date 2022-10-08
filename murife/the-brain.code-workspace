@@ -8,5 +8,12 @@
 		"path": "."
 	}
 ],
-  "settings": {}
+"settings": {
+	"cSpell.words": [
+		"leftturn",
+		"moveforward",
+		"myservo",
+		"rightturn"
+	]
+}
 }
