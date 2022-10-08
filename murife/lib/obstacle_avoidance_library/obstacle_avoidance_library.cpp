@@ -50,14 +50,14 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
     {
       // left
       int object = true;
-      turn(object, leftIrSensor, rightIrSensor);
+      turn(object, leftIrSensor, rightIrSensor, motor1, motor2, motor3, motor4);
       Serial.println("moveLeft");
     }
     else
     {
       // right
       int object = false;
-      turn(object, leftIrSensor, rightIrSensor);
+      turn(object, leftIrSensor, rightIrSensor, motor1, motor2, motor3, motor4);
       Serial.println("moveRight");
     }
     delay(100);

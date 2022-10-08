@@ -41,16 +41,16 @@ void Stop(AF_DCMotor motor1, AF_DCMotor motor2, AF_DCMotor motor3, AF_DCMotor mo
   motor4.run(RELEASE);
 }
 
-void turn(boolean object,int leftIrSensor, int rightIrSensor)
+void turn(boolean object, int leftIrSensor, int rightIrSensor, AF_DCMotor motor1, AF_DCMotor motor2, AF_DCMotor motor3, AF_DCMotor motor4)
 {
   if (object == false)
   {
     Serial.print("turn Right");
-    moveLeft();
+    moveLeft(motor1, motor2, motor3, motor4);
     delay(700);
-    moveForward();
+    moveForward(motor1, motor2, motor3, motor4);
     delay(800);
-    moveRight();
+    moveRight(motor1, motor2, motor3, motor4);
     delay(900);
     if (digitalRead(rightIrSensor) == 1)
     {
@@ -58,17 +58,17 @@ void turn(boolean object,int leftIrSensor, int rightIrSensor)
     }
     else
     {
-      moveForward();
+      moveForward(motor1, motor2, motor3, motor4);
     }
   }
   else
   {
     Serial.println("turn left");
-    moveRight();
+    moveRight(motor1, motor2, motor3, motor4);
     delay(700);
-    moveForward();
+    moveForward(motor1, motor2, motor3, motor4);
     delay(800);
-    moveLeft();
+    moveLeft(motor1, motor2, motor3, motor4);
     delay(900);
     if (digitalRead(leftIrSensor) == 1)
     {
@@ -76,7 +76,7 @@ void turn(boolean object,int leftIrSensor, int rightIrSensor)
     }
     else
     {
-      moveForward();
+      moveForward(motor1, motor2, motor3, motor4);
     }
   }
 }
