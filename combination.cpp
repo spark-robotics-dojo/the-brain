@@ -30,15 +30,16 @@ int leftDistance;
 int rightDistance;
 boolean object;
 
-#define moveLeft() ;
-#define moveRight() ;
-#define Stop() ;
-#define moveRight() ;
-#define moveLeft() ;
-#define lookRight() ;
-#define lookLeft() ;
-#define turn() ;
-#define moveForward() ;
+// int (moveLeft(); moveRight(); Stop(); moveRight(); moveLeft(); lookRight(); lookLeft(); turn(); moveForward());
+int moveLeft() ;
+int moveRight() ;
+int Stop() ;
+int moveRight() ;
+int moveLeft() ;
+int lookRight() ;
+int lookLeft() ;
+int turn() ;
+int moveForward() ;
 
 void setup()
 {
@@ -169,6 +170,7 @@ void Stop()
   motor3.run(RELEASE);
   motor4.run(RELEASE);
 }
+
 void moveForward()
 {
   motor1.run(FORWARD);
@@ -176,6 +178,7 @@ void moveForward()
   motor3.run(FORWARD);
   motor4.run(FORWARD);
 }
+
 void moveBackward()
 {
   motor1.run(BACKWARD);
@@ -183,10 +186,10 @@ void moveBackward()
   motor3.run(BACKWARD);
   motor4.run(BACKWARD);
 }
+
 void turn()
 {
-  if (object == false)
-  {
+  if (object == false){
     Serial.print("turn Right");
     moveLeft();
     delay(700);
