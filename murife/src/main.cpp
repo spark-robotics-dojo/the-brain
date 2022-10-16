@@ -66,11 +66,13 @@ void setup()
   gyroSensor.beginGyro();
   gyroSensor.beginMag();
 
-  calibrated_angular_velocity = getOmega(gyroSensor);
+  calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
   Serial.print("calibrated_angular_velocity, omega: ");
   Serial.println(calibrated_angular_velocity);
 
   Serial.println("\n+++++++++++++++++++++++ ROBOT CALIBRATION SUCCESS!!! +++++++++++++++++++++++ ");
+
+  // Serial.println(getDeltaT(90, calibrated_angular_velocity));
 }
 
 void loop()
