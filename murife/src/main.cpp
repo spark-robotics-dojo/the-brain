@@ -22,8 +22,8 @@ Servo myservo;
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, max_distance);
 
-AF_DCMotor motor1(1, MOTOR12_64KHZ);
-AF_DCMotor motor2(2, MOTOR12_64KHZ);
+AF_DCMotor LeftMotor(1, MOTOR12_8KHZ);
+AF_DCMotor RightMotor(2, MOTOR12_8KHZ);
 //AF_DCMotor motor3(3, MOTOR34_1KHZ);
 //AF_DCMotor motor4(4, MOTOR34_1KHZ);
 
@@ -42,10 +42,10 @@ void setup()
   //myservo.write(90);
 
   //! Get rid of magic numbers by defining them elsewhere.
-  motor1.setSpeed(200);
-  motor1.run(RELEASE);
-  motor2.setSpeed(200);
-  motor2.run(RELEASE);
+  LeftMotor.setSpeed(200);
+  LeftMotor.run(RELEASE);
+  RightMotor.setSpeed(200);
+  RightMotor.run(RELEASE);
   //motor3.setSpeed(200);
   //motor4.setSpeed(200);
 }
@@ -53,5 +53,5 @@ void setup()
 void loop()
 {
 
-  obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, motor1, motor2) //motor3, motor4);
+  obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, LeftMotor, RightMotor); //motor3, motor4);
 }
