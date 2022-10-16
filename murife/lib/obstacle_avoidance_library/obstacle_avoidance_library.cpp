@@ -103,7 +103,7 @@ int lookLeft(NewPing sonarObject, Servo servoObject, int leftDistance)
 
 int lookRight(NewPing sonarObject, Servo servoObject, int rightDistance)
 {
-  // look right
+  // loowhatk right
   //! Magic numbers need to be explained or defined at the top level
   servoObject.write(30);
   delay(500);
