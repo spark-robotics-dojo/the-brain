@@ -4,42 +4,42 @@
 #include <motor_library.h>
 #include <AFMotor.h>
 
-void obstacleAvoidanceAlgorithm(NewPing sonarObject, Servo servoObject, int leftIrSensor, int rightIrSensor, int rightDistance, int leftDistance, boolean object, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) //AF_DCMotor motor3, AF_DCMotor motor4)
+void obstacleAvoidanceAlgorithm(NewPing sonarObject, Servo servoObject, int leftIrSensor, int rightIrSensor, int rightDistance, int leftDistance, boolean object, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) // AF_DCMotor motor3, AF_DCMotor motor4)
 {
   // put your main code here, to run repeatedly:
   if (digitalRead(leftIrSensor) == 0 && digitalRead(rightIrSensor) == 0)
   {
-    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); //motor3, motor4);
+    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
     // forward
   }
   else if (digitalRead(leftIrSensor) == 0 && digitalRead(rightIrSensor) == 1)
   {
-    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); //motor3, motor4);
+    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
     Serial.println("TL");
     // leftturn
-    moveLeft(LeftMotor, RightMotor) //motor3, motor4);
+    moveLeft(LeftMotor, RightMotor); // motor3, motor4);
   }
   else if (digitalRead(leftIrSensor) == 1 && digitalRead(rightIrSensor) == 0)
   {
-    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); //tor3, motor4);
+    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // tor3, motor4);
     Serial.println("TR");
     // rightturn
-    moveRight(LeftMotor, RightMotor); //motor3, motor4);
+    moveRight(LeftMotor, RightMotor); // motor3, motor4);
   }
   else if (digitalRead(leftIrSensor) == 1 && digitalRead(rightIrSensor) == 1)
   {
     // Stop
-    Stop(LeftMotor, RightMotor); //motor3, motor4);
+    Stop(LeftMotor, RightMotor); // motor3, motor4);
   }
 }
 
-void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int leftDistance, boolean object, int leftIrSensor, int rightIrSensor, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) //AF_DCMotor motor3, AF_DCMotor motor4)
+void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int leftDistance, boolean object, int leftIrSensor, int rightIrSensor, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) // AF_DCMotor motor3, AF_DCMotor motor4)
 {
   int distance = getDistance(sonarObject);
   if (distance <= 15)
   {
     // stop
-    Stop(LeftMotor, RightMotor); ///motor3, motor4);
+    Stop(LeftMotor, RightMotor); /// motor3, motor4);
     Serial.println("Stop");
 
     lookLeft(sonarObject, servoObject, leftDistance);
@@ -50,14 +50,14 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
     {
       // left
       int object = true;
-      turn(object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); //motor3, motor4);
+      turn(object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
       Serial.println("moveLeft");
     }
     else
     {
       // right
       int object = false;
-      turn(object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); //motor3, motor4);
+      turn(object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
       Serial.println("moveRight");
     }
     delay(100);
@@ -66,7 +66,7 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
   {
     // forward
     Serial.println("moveforward");
-    moveForward(LeftMotor, RightMotor); //motor3, motor4);
+    moveForward(LeftMotor, RightMotor); // motor3, motor4);
   }
 }
 
