@@ -17,7 +17,7 @@ void obstacleAvoidanceAlgorithm(NewPing sonarObject, Servo servoObject, int left
     objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); //motor3, motor4);
     Serial.println("TL");
     // leftturn
-    moveLeft(LeftMotor, RightMotor) //motor3, motor4);
+    moveLeft(LeftMotor, RightMotor); //motor3, motor4);
   }
   else if (digitalRead(leftIrSensor) == 1 && digitalRead(rightIrSensor) == 0)
   {

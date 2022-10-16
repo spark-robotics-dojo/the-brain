@@ -42,9 +42,9 @@ void setup()
   //myservo.write(90);
 
   //! Get rid of magic numbers by defining them elsewhere.
-  LeftMotor.setSpeed(200);
+  LeftMotor.setSpeed(MAX_SPEED);
   LeftMotor.run(RELEASE);
-  RightMotor.setSpeed(200);
+  RightMotor.setSpeed(MAX_SPEED);
   RightMotor.run(RELEASE);
   //motor3.setSpeed(200);
   //motor4.setSpeed(200);
