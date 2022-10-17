@@ -1,7 +1,9 @@
 #include <Arduino.h>
+#include <MPU9250_asukiaaa.h>
 
 // import the custom libraries
 #include <obstacle_avoidance_library.h>
+#include <gyro_library.h>
 
 // ----------------------------- DEFINE PINS & ESSENTIAL VARIABLES ---------------------------------
 
@@ -24,8 +26,11 @@ NewPing sonar(TRIGGER_PIN, ECHO_PIN, max_distance);
 
 AF_DCMotor LeftMotor(1, MOTOR12_8KHZ);
 AF_DCMotor RightMotor(2, MOTOR12_8KHZ);
-//AF_DCMotor motor3(3, MOTOR34_1KHZ);
-//AF_DCMotor motor4(4, MOTOR34_1KHZ);
+// AF_DCMotor motor3(3, MOTOR34_1KHZ);
+// AF_DCMotor motor4(4, MOTOR34_1KHZ);
+
+MPU9250_asukiaaa gyroSensor;
+float calibrated_angular_velocity = 0;
 
 // Essential Variables
 int distance = 0;
@@ -33,25 +38,45 @@ int leftDistance;
 int rightDistance;
 boolean object;
 
+float getOmega();
+
 void setup()
 {
-  Serial.begin(9600);
+
+  Serial.begin(115200);
   pinMode(irLeft, INPUT);
   pinMode(irRight, INPUT);
-  myservo.attach(10);
-  //myservo.write(90);
 
-  //! Get rid of magic numbers by defining them elsewhere.
-  LeftMotor.setSpeed(MAX_SPEED);
+  Serial.println("\n+++++++++++++++++++++++ ROBOT CALIBRATION STARTED +++++++++++++++++++++++ ");
+
+  Serial.println("\nCALIBRATION : MOTOR_SETTINGS");
+  myservo.attach(10);
+  // myservo.write(90);
+
+  LeftMotor.setSpeed(200);
   LeftMotor.run(RELEASE);
-  RightMotor.setSpeed(MAX_SPEED);
+  RightMotor.setSpeed(200);
   RightMotor.run(RELEASE);
-  //motor3.setSpeed(200);
-  //motor4.setSpeed(200);
+  // motor3.setSpeed(200);
+  // motor4.setSpeed(200);
+
+  Serial.println("\nCALIBRATION : MPU9250, GET_OMEGA");
+  // Initialize MPU9250
+  gyroSensor.beginAccel();
+  gyroSensor.beginGyro();
+  gyroSensor.beginMag();
+
+  calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
+  Serial.print("calibrated_angular_velocity, omega: ");
+  Serial.println(calibrated_angular_velocity);
+
+  Serial.println("\n+++++++++++++++++++++++ ROBOT CALIBRATION SUCCESS!!! +++++++++++++++++++++++ ");
+
+  // Serial.println(getDeltaT(90, calibrated_angular_velocity));
 }
 
 void loop()
 {
-
-  obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, LeftMotor, RightMotor); //motor3, motor4);
+  // Serial.println(calibrated_angular_velocity);
+  // obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, motor1, motor2) // motor3, motor4);
 }
