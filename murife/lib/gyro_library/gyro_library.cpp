@@ -15,14 +15,18 @@ float getOmega(MPU9250_asukiaaa mpuObject, AF_DCMotor motor1, AF_DCMotor motor2,
   float angularVelocitySum = 0;
   float iterations = 0;
   float gY;
+  long delayInterval100 = 100;
+  unsigned long previousTimeGyroLoop = millis();
 
   //! This is a Blocking Function!
+  //? Is it really?
   moveRight(motor1, motor2);
 
   // Start timer once triggered - we'll compute calibration time
   while (digitalRead(leftIrSensor) != 1)
   {
   }
+
   float startTime = millis();
   int rightIRTriggerCount = 0;
   int leftIRTriggerCount = 0;
@@ -31,48 +35,52 @@ float getOmega(MPU9250_asukiaaa mpuObject, AF_DCMotor motor1, AF_DCMotor motor2,
   while (stopTrigger != 1)
   {
 
-    int result;
+    // Implemented non-blocking code.
+    // The delay limits the number of times we read from MPU
+    unsigned long currentTime = millis();
 
-    // read the gyroscope from the MPU
-    result = mpuObject.gyroUpdate();
-    if (result == 0)
+    if (currentTime - previousTimeGyroLoop > delayInterval100)
     {
-      // read the angular velocity in the y-Axis
-      gY = abs(mpuObject.gyroY());
+      previousTimeGyroLoop = currentTime;
+      int result;
 
-      angularVelocitySum += gY;
+      // read the gyroscope from the MPU
+      result = mpuObject.gyroUpdate();
+      if (result == 0)
+      {
+        // read the angular velocity in the y-Axis
+        gY = abs(mpuObject.gyroY());
 
-      // increment iteration only when we successfully read from the MPU
-      iterations += 1;
+        angularVelocitySum += gY;
+
+        // increment iteration only when we successfully read from the MPU
+        iterations += 1;
+      }
+      else
+      {
+        gY = 0;
+      }
+
+      if (digitalRead(rightIrSensor) == 1)
+      {
+        rightIRTriggerCount += 1;
+      }
+
+      if (digitalRead(leftIrSensor) == 1)
+      {
+        leftIRTriggerCount += 1;
+      }
+
+      // Stop the calibration routine.
+      if (rightIRTriggerCount == 2 && leftIRTriggerCount == 1)
+      {
+        // Stop the motors (robot)
+        Stop(motor1, motor2);
+
+        // break out of loop
+        stopTrigger = 1;
+      }
     }
-    else
-    {
-      gY = 0;
-    }
-
-    if (digitalRead(rightIrSensor) == 1)
-    {
-      rightIRTriggerCount += 1;
-    }
-
-    if (digitalRead(leftIrSensor) == 1)
-    {
-      leftIRTriggerCount += 1;
-    }
-
-    // Stop the calibration routine.
-    if (rightIRTriggerCount == 2 && leftIRTriggerCount == 1)
-    {
-      // Stop the motors (robot)
-      Stop(motor1, motor2);
-
-      // break out of loop
-      stopTrigger = 1;
-    }
-
-
-    // limit the number of times we read from MPU
-    delay(100);
   }
 
   // get average angular velocity -> omega
