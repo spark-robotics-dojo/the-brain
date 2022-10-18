@@ -17,7 +17,7 @@ void obstacleAvoidanceAlgorithm(NewPing sonarObject, Servo servoObject, int left
     objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
     Serial.println("TL");
     // leftturn
-    moveLeft(LeftMotor, RightMotor) //motor3, motor4);
+    moveLeft(LeftMotor, RightMotor) // motor3, motor4);
   }
   else if (digitalRead(leftIrSensor) == 1 && digitalRead(rightIrSensor) == 0)
   {
@@ -44,6 +44,8 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
 
     lookLeft(sonarObject, servoObject, leftDistance);
     lookRight(sonarObject, servoObject, rightDistance);
+
+    //! why the delay?
     delay(100);
 
     if (rightDistance <= leftDistance)
@@ -60,6 +62,8 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
       turn(object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
       Serial.println("moveRight");
     }
+
+    //! why the delay?
     delay(100);
   }
   else
@@ -72,6 +76,8 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
 
 int getDistance(NewPing sonarObject)
 {
+
+  //! why the delay?
   delay(50);
   int cm = sonarObject.ping_cm();
 
@@ -89,8 +95,10 @@ int lookLeft(NewPing sonarObject, Servo servoObject, int leftDistance)
   // look left
   //! Magic numbers need to be explained or defined at the top level
   servoObject.write(150);
+  //! why the delay?
   delay(500);
   leftDistance = getDistance(sonarObject);
+  //! why the delay?
   delay(100);
   servoObject.write(90);
   Serial.print("Left");
@@ -106,8 +114,10 @@ int lookRight(NewPing sonarObject, Servo servoObject, int rightDistance)
   // loowhatk right
   //! Magic numbers need to be explained or defined at the top level
   servoObject.write(30);
+  //! why the delay?
   delay(500);
   rightDistance = getDistance(sonarObject);
+  //! why the delay?
   delay(100);
   servoObject.write(90);
   Serial.print(" ");
