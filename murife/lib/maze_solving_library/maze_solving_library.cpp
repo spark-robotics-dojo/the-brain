@@ -6,12 +6,14 @@
 #include <NewPing.h>
 #include <Servo.h>
 
-#define exitMazeCount 7 // 6-th index
-#define mazeExitDistance 10
+#define exitMazeCount 7     // 6-th index
+#define mazeExitDistance 15 // Defines the opening (exit of the maze)
+#define distanceToWall 10   // determines distance to trigger turn event
 
 // Maze direction representation
 int mazeInterpretation[8] = {1, 2, 1, 2, 2, 1, 1, 2};
 
+// count the number of turns to determine position in the maze
 int turnCount = 0;
 bool exitCondition = false;
 
@@ -35,8 +37,14 @@ void mazeSolvingAlgorithm(AF_DCMotor motor1, AF_DCMotor motor2, float angular_ve
     moveForward(motor1, motor2);
 
     // trigger turning if we approach the wall <Ultrasonic>
+    int distance = getDistance(sonarObject);
+    if (distance < distanceToWall)
+    {
+      turn = true;
+    }
   }
 
+  // runs when we are exiting the maze (final turn)
   if (exitCondition == true)
   {
     mazeExit(motor1, motor2, angular_velocity, servoObject, sonarObject);
@@ -50,7 +58,9 @@ void mazeSolvingAlgorithm(AF_DCMotor motor1, AF_DCMotor motor2, float angular_ve
 bool mazeTurn(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity)
 {
 
+  // determines whether to turn left or right
   int mazeAction = mazeInterpretation[turnCount];
+  // flag to ensure we've turned
   bool stillTurning = false;
 
   if (mazeAction == 1)
@@ -62,6 +72,7 @@ bool mazeTurn(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity)
     stillTurning = mazeTurnRight(motor1, motor2, angular_velocity);
   }
 
+  // increase turnCount to mark turn as complete
   turnCount += 1;
 
   // Set exit conditions
@@ -121,6 +132,9 @@ bool mazeTurnLeft(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity)
 
 void mazeExit(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity, Servo servoObject, NewPing sonarObject)
 {
+  // turn left (final turn)
+  mazeTurn(motor1, motor2, angular_velocity);
+
   // look right
   checkRight(servoObject);
 
