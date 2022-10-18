@@ -94,6 +94,7 @@ float getOmega(MPU9250_asukiaaa mpuObject, AF_DCMotor motor1, AF_DCMotor motor2,
   float deltaTime = stopTime - startTime;
   deltaTime = deltaTime / 1000; // convert milliseconds into seconds
 
+  // angular velocity in degrees per second
   return omega;
 }
 
@@ -103,5 +104,6 @@ float getDeltaT(int angle, float omega)
 
   float deltaT = angle / omega;
 
+  // in seconds
   return deltaT;
 }

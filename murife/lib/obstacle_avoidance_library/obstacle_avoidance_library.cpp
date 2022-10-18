@@ -128,3 +128,19 @@ int lookRight(NewPing sonarObject, Servo servoObject, int rightDistance)
   return rightDistance;
   delay(100);
 }
+
+// Additional Functions to just control the servo.
+void checkRight(Servo servoObject)
+{
+  servoObject.write(30);
+}
+
+void checkLeft(Servo servoObject)
+{
+  servoObject.write(150);
+}
+
+void checkForward(Servo servoObject)
+{
+  servoObject.write(90);
+}

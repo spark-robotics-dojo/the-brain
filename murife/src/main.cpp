@@ -5,6 +5,7 @@
 #include <obstacle_avoidance_library.h>
 #include <motor_library.h>
 #include <gyro_library.h>
+#include <maze_solving_library.h>
 
 // ----------------------------- DEFINE PINS & ESSENTIAL VARIABLES ---------------------------------
 
@@ -80,5 +81,7 @@ void loop()
 {
   // Serial.println(calibrated_angular_velocity);
   // obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, motor1, motor2) // motor3, motor4);
-  moveForward(LeftMotor, RightMotor);
+  // moveForward(LeftMotor, RightMotor);
+
+  mazeSolvingAlgorithm(LeftMotor, RightMotor, calibrated_angular_velocity, myservo, sonar);
 }
