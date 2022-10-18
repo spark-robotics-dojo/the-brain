@@ -3,6 +3,7 @@
 
 // import the custom libraries
 #include <obstacle_avoidance_library.h>
+#include <motor_library.h>
 #include <gyro_library.h>
 
 // ----------------------------- DEFINE PINS & ESSENTIAL VARIABLES ---------------------------------
@@ -66,7 +67,7 @@ void setup()
   gyroSensor.beginGyro();
   gyroSensor.beginMag();
 
-  calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
+  // calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
   Serial.print("calibrated_angular_velocity, omega: ");
   Serial.println(calibrated_angular_velocity);
 
@@ -79,4 +80,5 @@ void loop()
 {
   // Serial.println(calibrated_angular_velocity);
   // obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, motor1, motor2) // motor3, motor4);
+  moveForward(LeftMotor, RightMotor);
 }

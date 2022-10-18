@@ -58,7 +58,7 @@ void turn(boolean object, int leftIrSensor, int rightIrSensor, AF_DCMotor LeftMo
     }
     else
     {
-      moveForward(LeftMotor, RightMotor) //motor3, motor4);
+      moveForward(LeftMotor, RightMotor); // motor3, motor4);
     }
   }
   else
