@@ -6,16 +6,21 @@
 #include <NewPing.h>
 #include <Servo.h>
 
-#define exitMazeCount 7     // 6-th index
-#define mazeExitDistance 15 // Defines the opening (exit of the maze)
-#define distanceToWall 10   // determines distance to trigger turn event
+#define exitMazeCount 7      // 6-th index
+#define uTurnCount 4         // 3-rd index
+#define uTurnExitDistance 40 // hard-coded distance to determine uTurn location
+#define mazeExitDistance 15  // Defines the opening (exit of the maze)
+#define distanceToWall 10    // determines distance to trigger turn event
 
 // Maze direction representation
-int mazeInterpretation[8] = {1, 2, 1, 2, 2, 1, 1, 2};
+int mazeInterpretationOld[8] = {1, 2, 1, 2, 2, 1, 1, 2};
+// new maze
+int mazeInterpretation[8] = {1, 2, 2, 1, 1, 2, 1, 2};
 
 // count the number of turns to determine position in the maze
 int turnCount = 0;
 bool exitCondition = false;
+bool uTurnCondition = false;
 
 // for non-blocking code.
 // unsigned long previousDelayTimeInterval = millis();
@@ -24,6 +29,7 @@ bool exitCondition = false;
 bool mazeTurn(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity);
 bool mazeTurnRight(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity);
 bool mazeTurnLeft(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity);
+bool mazeUTurn(NewPing sonarObject, AF_DCMotor motor1, AF_DCMotor motor2);
 void mazeExit(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity, Servo servoObject, NewPing sonarObject);
 
 void mazeSolvingAlgorithm(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity, Servo servoObject, NewPing sonarObject)
@@ -32,7 +38,7 @@ void mazeSolvingAlgorithm(AF_DCMotor motor1, AF_DCMotor motor2, float angular_ve
   bool turn = false;
 
   // could we get rid of the loop as this function will be called in the main loop??
-  while (turn == false && exitCondition == false)
+  while (turn == false && exitCondition == false && uTurnCondition == false)
   {
     moveForward(motor1, motor2);
 
@@ -42,6 +48,16 @@ void mazeSolvingAlgorithm(AF_DCMotor motor1, AF_DCMotor motor2, float angular_ve
     {
       turn = true;
     }
+  }
+
+  // runs when we are at turn 5
+  if (uTurnCondition == true)
+  {
+    mazeUTurn(sonarObject, motor1, motor2);
+  }
+  else
+  {
+    turn = mazeTurn(motor1, motor2, angular_velocity);
   }
 
   // runs when we are exiting the maze (final turn)
@@ -74,6 +90,12 @@ bool mazeTurn(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity)
 
   // increase turnCount to mark turn as complete
   turnCount += 1;
+
+  // Set UTurn conditions
+  if (turnCount == uTurnCount)
+  {
+    uTurnCondition = true;
+  }
 
   // Set exit conditions
   if (turnCount == exitMazeCount)
@@ -126,6 +148,31 @@ bool mazeTurnLeft(AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity)
   delay(delayTime);
   // stop
   Stop(motor1, motor2);
+
+  return false;
+}
+
+bool mazeUTurn(NewPing sonarObject, AF_DCMotor motor1, AF_DCMotor motor2, float angular_velocity)
+{
+
+  int distance = getDistance(sonarObject);
+
+  while (distance > uTurnExitDistance)
+  {
+    moveForward(motor1, motor2);
+    // updated distance to wall
+    distance = getDistance(sonarObject);
+  }
+
+  Stop(motor1, motor2);
+
+  mazeTurnLeft(motor1, motor2, angular_velocity);
+
+  // give back control to main mazeSolving algorithm.
+  // accounts for the left turn above
+  turnCount += 1;
+
+  uTurnCondition = false;
 
   return false;
 }

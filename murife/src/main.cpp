@@ -68,7 +68,7 @@ void setup()
   gyroSensor.beginGyro();
   gyroSensor.beginMag();
 
-  // calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
+  calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
   Serial.print("calibrated_angular_velocity, omega: ");
   Serial.println(calibrated_angular_velocity);
 
@@ -79,7 +79,7 @@ void setup()
 
 void loop()
 {
-  // Serial.println(calibrated_angular_velocity);
+  Serial.println(calibrated_angular_velocity);
   // obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, motor1, motor2) // motor3, motor4);
   // moveForward(LeftMotor, RightMotor);
   obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, LeftMotor, RightMotor);
