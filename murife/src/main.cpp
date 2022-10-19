@@ -81,7 +81,9 @@ void loop()
 {
   // Serial.println(calibrated_angular_velocity);
   // obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, motor1, motor2) // motor3, motor4);
-  moveForward(LeftMotor, RightMotor);
+  // moveForward(LeftMotor, RightMotor);
+  obstacleAvoidanceAlgorithm(sonar, myservo, irLeft, irRight, rightDistance, leftDistance, object, LeftMotor, RightMotor);
+  // Serial.println(getDistance(sonar));
   // delay(5000);
   // moveBackward(LeftMotor, RightMotor);
   // delay(5000);
