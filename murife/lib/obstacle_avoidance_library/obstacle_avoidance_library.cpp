@@ -4,36 +4,37 @@
 #include <motor_library.h>
 #include <AFMotor.h>
 
-void obstacleAvoidanceAlgorithm(NewPing sonarObject, Servo servoObject, int leftIrSensor, int rightIrSensor, int rightDistance, int leftDistance, boolean object, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) // AF_DCMotor motor3, AF_DCMotor motor4)
+void obstacleAvoidanceAlgorithm(NewPing sonarObject, Servo servoObject, int irLeft, int irRight, int rightDistance, int leftDistance, boolean object, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) // AF_DCMotor motor3, AF_DCMotor motor4)
 {
   // put your main code here, to run repeatedly:
-  if (digitalRead(leftIrSensor) == 0 && digitalRead(rightIrSensor) == 0)
+  // 0 rep white while 1 rep black
+  if (digitalRead(irLeft) == 0 && digitalRead(irRight) == 0)
   {
-    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
+    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, irLeft, irRight, LeftMotor, RightMotor); // motor3, motor4);
     // forward
   }
-  else if (digitalRead(leftIrSensor) == 0 && digitalRead(rightIrSensor) == 1)
+  else if (digitalRead(irLeft) == 1 && digitalRead(irRight) == 0)
   {
-    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
+    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, irLeft, irRight, LeftMotor, RightMotor); // motor3, motor4);
     Serial.println("TL");
-    // leftturn
+    // lefttturn
     moveLeft(LeftMotor, RightMotor); // motor3, motor4);
   }
-  else if (digitalRead(leftIrSensor) == 1 && digitalRead(rightIrSensor) == 0)
+  else if (digitalRead(irLeft) == 0 && digitalRead(irRight) == 1)
   {
-    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // tor3, motor4);
+    objectAvoid(sonarObject, servoObject, rightDistance, leftDistance, object, irLeft, irRight, LeftMotor, RightMotor); // tor3, motor4);
     Serial.println("TR");
-    // rightturn
+    // righttturn
     moveRight(LeftMotor, RightMotor); // motor3, motor4);
   }
-  else if (digitalRead(leftIrSensor) == 1 && digitalRead(rightIrSensor) == 1)
+  else if (digitalRead(irLeft) == 1 && digitalRead(irRight) == 1)
   {
     // Stop
     Stop(LeftMotor, RightMotor); // motor3, motor4);
   }
 }
 
-void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int leftDistance, boolean object, int leftIrSensor, int rightIrSensor, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) // AF_DCMotor motor3, AF_DCMotor motor4)
+void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int leftDistance, boolean object, int irLeft, int irRight, AF_DCMotor LeftMotor, AF_DCMotor RightMotor) // AF_DCMotor motor3, AF_DCMotor motor4)
 {
   int distance = getDistance(sonarObject);
   if (distance <= 15)
@@ -45,25 +46,25 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
     lookLeft(sonarObject, servoObject, leftDistance);
     lookRight(sonarObject, servoObject, rightDistance);
 
-    //! why the delay?
+    //! why the delay? Allows the ultrasonic sensor sometime to give distance and adjust to next pos
     delay(100);
 
     if (rightDistance <= leftDistance)
     {
       // left
       int object = true;
-      turn(object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
+      turn(object, irLeft, irRight, LeftMotor, RightMotor); // motor3, motor4);
       Serial.println("moveLeft");
     }
     else
     {
       // right
       int object = false;
-      turn(object, leftIrSensor, rightIrSensor, LeftMotor, RightMotor); // motor3, motor4);
+      turn(object, irLeft, irRight, LeftMotor, RightMotor); // motor3, motor4);
       Serial.println("moveRight");
     }
 
-    //! why the delay?
+    //! why the delay? Give time for the servo to move
     delay(100);
   }
   else
@@ -77,11 +78,11 @@ void objectAvoid(NewPing sonarObject, Servo servoObject, int rightDistance, int 
 int getDistance(NewPing sonarObject)
 {
 
-  //! why the delay?
+  //! why the delay? Movement of the Servo
   delay(50);
   int cm = sonarObject.ping_cm();
 
-  //! What does this mean / do ?
+  //! What does this mean / do ? its for the ping fn
   if (cm == 0)
   {
     cm = 100;
