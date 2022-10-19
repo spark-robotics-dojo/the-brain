@@ -55,9 +55,9 @@ void setup()
   myservo.attach(10);
   // myservo.write(90);
 
-  LeftMotor.setSpeed(200);
+  LeftMotor.setSpeed(50);
   LeftMotor.run(RELEASE);
-  RightMotor.setSpeed(200);
+  RightMotor.setSpeed(50);
   RightMotor.run(RELEASE);
   // motor3.setSpeed(200);
   // motor4.setSpeed(200);
