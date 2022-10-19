@@ -55,9 +55,9 @@ void setup()
   myservo.attach(10);
   // myservo.write(90);
 
-  LeftMotor.setSpeed(50);
+  LeftMotor.setSpeed(63);
   LeftMotor.run(RELEASE);
-  RightMotor.setSpeed(50);
+  RightMotor.setSpeed(63);
   RightMotor.run(RELEASE);
   // motor3.setSpeed(200);
   // motor4.setSpeed(200);
@@ -68,7 +68,7 @@ void setup()
   gyroSensor.beginGyro();
   gyroSensor.beginMag();
 
-  calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
+  // calibrated_angular_velocity = getOmega(gyroSensor, LeftMotor, RightMotor, irLeft, irRight);
   Serial.print("calibrated_angular_velocity, omega: ");
   Serial.println(calibrated_angular_velocity);
 
